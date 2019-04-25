@@ -18,8 +18,8 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "tape": "~1.0.2",
-    "st": "^0.4.1"
+    "st": "^1.2.2",
+    "tape": "~1.0.2"
   },
   "licenses": [
     {
