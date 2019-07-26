@@ -585,7 +585,43 @@ Suites.push({
 Suites.push({
     name: 'Sauron',
     url: 'todomvc/sauron/index.html',
-    version: '0.4.0',
+    version: '0.7.1',
+    prepare: function (runner, contentWindow, contentDocument) {
+        //contentWindow.likely.sync = function () {}
+        //contentWindow.data.items = [];
+        return runner.waitForElement('.new-todo').then(function (element) {
+            element.focus();
+            return element;
+        });
+    },
+    tests: [
+        new BenchmarkTestStep('Adding' + numberOfItemsToAdd + 'Items', function (newTodo, contentWindow, contentDocument) {
+            var changeEvt = document.createEvent('Event');
+            changeEvt.initEvent('input', true, true);
+            var keydownEvent = new KeyboardEvent("keypress", {"key": "Enter"});
+            for (var i = 0; i < numberOfItemsToAdd; i++) {
+                newTodo.value = 'Sauron ----- Something to do ' + i;
+                newTodo.dispatchEvent(changeEvt);
+                newTodo.dispatchEvent(keydownEvent);
+            }
+        }),
+        new BenchmarkTestStep('CompletingAllItems', function (newTodo, contentWindow, contentDocument) {
+            var checkboxes = contentDocument.querySelectorAll('.toggle');
+            for (var i = 0; i < checkboxes.length; i++)
+                checkboxes[i].click();
+        }),
+        new BenchmarkTestStep('DeletingAllItems', function (newTodo, contentWindow, contentDocument) {
+            var deleteButtons = contentDocument.querySelectorAll('.destroy');
+            for (var i = deleteButtons.length - 1; i > -1; i--)
+                deleteButtons[i].click();
+        })
+    ]
+});
+
+Suites.push({
+    name: 'Sauron-Array',
+    url: 'todomvc/sauron_array/index.html',
+    version: '0.10.0',
     prepare: function (runner, contentWindow, contentDocument) {
         //contentWindow.likely.sync = function () {}
         //contentWindow.data.items = [];

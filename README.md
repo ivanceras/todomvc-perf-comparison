@@ -2,7 +2,7 @@
 
 Performance benchmarks for various TodoMVC implementations
 
-## Results 
+## Results
 
-![Sauron](sauron-benchmark.png)
+![Sauron](sauron-0.10.0.png)
 

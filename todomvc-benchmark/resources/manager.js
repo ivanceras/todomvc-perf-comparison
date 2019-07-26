@@ -167,7 +167,7 @@ function drawChart(results) {
     var options = {
 	title: "TodoMVC Benchmark",
 	width: 600,
-	height: 400,
+	height: 450,
         legend: { position: "none" },
         backgroundColor: 'transparent',
         hAxis: {title: title},
@@ -194,7 +194,7 @@ function shuffle ( ary ) {
 }
 
 function colorify(n){
-    var c = 'rgb(' + ( Math.max(0,(n.toLowerCase().charCodeAt(3 % n.length) - 97) / 26 * 255 | 0) ) + 
+    var c = 'rgb(' + ( Math.max(0,(n.toLowerCase().charCodeAt(3 % n.length) - 97) / 26 * 255 | 0) ) +
               ", " + ( Math.max(0,(n.toLowerCase().charCodeAt(4 % n.length) - 97) / 26 * 255 | 0) ) +
               ", " + ( Math.max(0,(n.toLowerCase().charCodeAt(5 % n.length) - 97) / 26 * 255 | 0) ) + ")"
     return c
