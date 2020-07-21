@@ -141,6 +141,7 @@ Suites.push({
     ]
 });
 
+/*
 Suites.push({
     name: 'Ember',
     url: 'todomvc/emberjs/index.html',
@@ -187,6 +188,7 @@ Suites.push({
         })
     ]
 });
+*/
 
 Suites.push({
     name: 'Angular',
@@ -358,6 +360,7 @@ Suites.push({
     ]
 });
 
+/*
 if (!navigator.userAgent.match("MSIE 9.0")) {
     Suites.push({
         name: 'Quiescent',
@@ -396,6 +399,7 @@ if (!navigator.userAgent.match("MSIE 9.0")) {
         ]
     });
 }
+*/
 
 Suites.push({
     name: 'Mercury',
@@ -509,6 +513,43 @@ Suites.push({
 });
 
 Suites.push({
+    name: 'Elm-0.19',
+    url: 'todomvc/elm-0.19/index.html',
+    version: '0.19',
+    prepare: function (runner, contentWindow, contentDocument) {
+        return runner.waitForElement('.new-todo').then(function (element) {
+            element.focus();
+            return element;
+        });
+    },
+    tests: [
+        new BenchmarkTestStep('Adding' + numberOfItemsToAdd + 'Items', function (newTodo, contentWindow, contentDocument) {
+            for (var i = 0; i < numberOfItemsToAdd; i++) {
+                var inputEvent = document.createEvent('Event');
+                inputEvent.initEvent('input', true, true);
+                newTodo.value = 'Elm ----------- Something to do ' + i;
+                newTodo.dispatchEvent(inputEvent);
+
+                var keydownEvent = document.createEvent('Event');
+                keydownEvent.initEvent('keydown', true, true);
+                keydownEvent.keyCode = 13; // VK_ENTER
+                newTodo.dispatchEvent(keydownEvent);
+            }
+        }),
+        new BenchmarkTestStep('CompletingAllItems', function (newTodo, contentWindow, contentDocument) {
+            var checkboxes = contentDocument.querySelectorAll('.toggle');
+            for (var i = 0; i < checkboxes.length; i++)
+                checkboxes[i].click();
+        }),
+        new BenchmarkTestStep('DeletingAllItems', function (newTodo, contentWindow, contentDocument) {
+            var deleteButtons = contentDocument.querySelectorAll('.destroy');
+            for (var i = deleteButtons.length - 1; i > -1; i--)
+                deleteButtons[i].click();
+        })
+    ]
+});
+
+Suites.push({
     name: 'Likely.js',
     url: 'todomvc/likelyjs/index.html',
     version: '0.9.1',
@@ -547,7 +588,7 @@ Suites.push({
 });
 
 Suites.push({
-    name: 'Yew',
+    name: 'Yew-0.2-alpha',
     url: 'todomvc/yew/index.html',
     version: '0.2.0-alpha',
     prepare: function (runner, contentWindow, contentDocument) {
@@ -583,9 +624,81 @@ Suites.push({
 });
 
 Suites.push({
+    name: 'Yew-0.17',
+    url: 'todomvc/yew-0.17/index.html',
+    version: '0.17',
+    prepare: function (runner, contentWindow, contentDocument) {
+        //contentWindow.likely.sync = function () {}
+        //contentWindow.data.items = [];
+        return runner.waitForElement('.new-todo').then(function (element) {
+            element.focus();
+            return element;
+        });
+    },
+    tests: [
+        new BenchmarkTestStep('Adding' + numberOfItemsToAdd + 'Items', function (newTodo, contentWindow, contentDocument) {
+            var changeEvt = document.createEvent('Event');
+            changeEvt.initEvent('input', true, true);
+            var keydownEvent = new KeyboardEvent("keypress", {"key": "Enter"});
+            for (var i = 0; i < numberOfItemsToAdd; i++) {
+                newTodo.value = 'Yew ----- Something to do ' + i;
+                newTodo.dispatchEvent(changeEvt);
+                newTodo.dispatchEvent(keydownEvent);
+            }
+        }),
+        new BenchmarkTestStep('CompletingAllItems', function (newTodo, contentWindow, contentDocument) {
+            var checkboxes = contentDocument.querySelectorAll('.toggle');
+            for (var i = 0; i < checkboxes.length; i++)
+                checkboxes[i].click();
+        }),
+        new BenchmarkTestStep('DeletingAllItems', function (newTodo, contentWindow, contentDocument) {
+            var deleteButtons = contentDocument.querySelectorAll('.destroy');
+            for (var i = deleteButtons.length - 1; i > -1; i--)
+                deleteButtons[i].click();
+        })
+    ]
+});
+
+Suites.push({
+    name: 'Seed',
+    url: 'todomvc/seed/index.html',
+    version: '0.7',
+    prepare: function (runner, contentWindow, contentDocument) {
+        //contentWindow.likely.sync = function () {}
+        //contentWindow.data.items = [];
+        return runner.waitForElement('.new-todo').then(function (element) {
+            element.focus();
+            return element;
+        });
+    },
+    tests: [
+        new BenchmarkTestStep('Adding' + numberOfItemsToAdd + 'Items', function (newTodo, contentWindow, contentDocument) {
+            var changeEvt = document.createEvent('Event');
+            changeEvt.initEvent('input', true, true);
+            var keydownEvent = new KeyboardEvent("keypress", {"key": "Enter"});
+            for (var i = 0; i < numberOfItemsToAdd; i++) {
+                newTodo.value = 'Seed ----- Something to do ' + i;
+                newTodo.dispatchEvent(changeEvt);
+                newTodo.dispatchEvent(keydownEvent);
+            }
+        }),
+        new BenchmarkTestStep('CompletingAllItems', function (newTodo, contentWindow, contentDocument) {
+            var checkboxes = contentDocument.querySelectorAll('.toggle');
+            for (var i = 0; i < checkboxes.length; i++)
+                checkboxes[i].click();
+        }),
+        new BenchmarkTestStep('DeletingAllItems', function (newTodo, contentWindow, contentDocument) {
+            var deleteButtons = contentDocument.querySelectorAll('.destroy');
+            for (var i = deleteButtons.length - 1; i > -1; i--)
+                deleteButtons[i].click();
+        })
+    ]
+});
+
+Suites.push({
     name: 'Sauron',
     url: 'todomvc/sauron/index.html',
-    version: '0.7.1',
+    version: '0.28',
     prepare: function (runner, contentWindow, contentDocument) {
         //contentWindow.likely.sync = function () {}
         //contentWindow.data.items = [];
@@ -618,41 +731,6 @@ Suites.push({
     ]
 });
 
-Suites.push({
-    name: 'Sauron-Array',
-    url: 'todomvc/sauron_array/index.html',
-    version: '0.10.0',
-    prepare: function (runner, contentWindow, contentDocument) {
-        //contentWindow.likely.sync = function () {}
-        //contentWindow.data.items = [];
-        return runner.waitForElement('.new-todo').then(function (element) {
-            element.focus();
-            return element;
-        });
-    },
-    tests: [
-        new BenchmarkTestStep('Adding' + numberOfItemsToAdd + 'Items', function (newTodo, contentWindow, contentDocument) {
-            var changeEvt = document.createEvent('Event');
-            changeEvt.initEvent('input', true, true);
-            var keydownEvent = new KeyboardEvent("keypress", {"key": "Enter"});
-            for (var i = 0; i < numberOfItemsToAdd; i++) {
-                newTodo.value = 'Sauron ----- Something to do ' + i;
-                newTodo.dispatchEvent(changeEvt);
-                newTodo.dispatchEvent(keydownEvent);
-            }
-        }),
-        new BenchmarkTestStep('CompletingAllItems', function (newTodo, contentWindow, contentDocument) {
-            var checkboxes = contentDocument.querySelectorAll('.toggle');
-            for (var i = 0; i < checkboxes.length; i++)
-                checkboxes[i].click();
-        }),
-        new BenchmarkTestStep('DeletingAllItems', function (newTodo, contentWindow, contentDocument) {
-            var deleteButtons = contentDocument.querySelectorAll('.destroy');
-            for (var i = deleteButtons.length - 1; i > -1; i--)
-                deleteButtons[i].click();
-        })
-    ]
-});
 
 
 shuffle(Suites)
